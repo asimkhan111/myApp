@@ -1,8 +1,23 @@
 import Cards from "./Cards";
-import list from '../../public/list.json';
+
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function Premium() {
+  const [app,setApp] = useState([])
+  useEffect(() =>{
+  const getApp =async() =>{
+    try {
+     const res =  await axios.get("http://localhost:3000/app")
+     console.log(res.data)
+     setApp(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  getApp();
+  },[])
   return (
     <>
       <div className="max-w-screen2xl container mx-auto md:px-20 px-4">
@@ -24,7 +39,7 @@ function Premium() {
         </div>
         <div className="mt=12 grid grid-cols-1 md:grid-cols-3">
           {
-          list.map((item) =>(
+          app.map((item) =>(
             <Cards key ={item.id} item={item} />
           ))
           }

@@ -1,11 +1,28 @@
-import list from "../../public/list.json";
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import Cards from "./Cards";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function FreeAccess() {
-  const filterData = list.filter((data) => data.category === "Free");
+  const [app,setApp] = useState([])
+  useEffect(() =>{
+  const getApp =async() =>{
+    try {
+     const res =  await axios.get("http://localhost:3000/app")
+     
+     const data =(res.data.filter((data) => data.category === "Free"));
+     console.log(data)
+     setApp(data);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  getApp();
+  },[])
+  
 
   var settings = {
     dots: true,
@@ -56,7 +73,7 @@ function FreeAccess() {
 
         <div>
           <Slider {...settings}>
-            {filterData.map((item) => (
+            {app.map((item) => (
               <Cards item={item} key={item.id}/>
             ))}
           </Slider>
